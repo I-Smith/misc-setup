@@ -1,0 +1,24 @@
+function installJdk() {
+	release=$1
+	if [ -z $release ]; then
+		echo "ERROR: No release specified"
+		echo "usage: $0 <jdk release major number>"
+		return 1
+	elif [ 2 -lt ${#release} ]; then
+		echo "ERROR: You tried to download release ${release} which is not a valid release. Your options are 8, 9, 10, 11, 12, 13, etc"
+		echo "usage: $0 <jdk release major number>"
+		return 2
+	fi
+
+	BINARY_LINK=$(curl -fsSL "https://api.adoptopenjdk.net/v2/info/releases/openjdk${release}?openjdk_impl=hotspot&os=mac&release=latest&type=jdk" | jq --raw-output '.binaries[0].binary_link')
+	echo $BINARY_LINK
+
+	mkdir -p ~/development/local/jdk && cd $_
+	curl -fsSL $BINARY_LINK | tar -xzv
+
+	DIRNAME=$(ls -t | head -1)
+	if [ -L $release ]; then
+		rm $release
+	fi
+	ln -s $DIRNAME/Contents/Home $release
+}
