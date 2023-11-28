@@ -1,0 +1,2 @@
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+[ -f .functions ] && source .functions
