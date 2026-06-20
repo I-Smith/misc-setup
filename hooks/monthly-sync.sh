@@ -10,6 +10,9 @@ DATE=$(date +%Y-%m-%d)
 # Load env vars (crontab does not source .zshenv)
 [ -f "$HOME/.zshenv" ] && source "$HOME/.zshenv"
 
+# Read Gmail app password from Keychain (never stored in files)
+GMAIL_APP_PASSWORD=$(security find-generic-password -a "$USER" -s "gmail-app-password" -w 2>/dev/null || true)
+
 # ── Claude agent path ─────────────────────────────────────────────────────────
 
 if command -v claude >/dev/null 2>&1; then

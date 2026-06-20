@@ -28,6 +28,11 @@ check "$HOME/Library/Application Support/Cursor/User/keybindings.json"
 check "$HOME/.claude/settings.json"
 check "$HOME/.claude/commands"
 
+# Git hooks
+if [ ! -x "$REPO/.git/hooks/pre-commit" ] || [ ! -L "$REPO/.git/hooks/pre-commit" ]; then
+  MISSING+=("$REPO/.git/hooks/pre-commit")
+fi
+
 # Monthly sync crontab
 CRON_MISSING=false
 if ! crontab -l 2>/dev/null | grep -qF "monthly-sync.sh"; then

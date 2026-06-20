@@ -65,8 +65,8 @@ Run terminal-notifier if available:
   terminal-notifier -title "dotfiles: monthly sync" -message "PR: <PR URL>" -open "<PR URL>"
 
 Send email via Python smtplib:
-  - Load GMAIL_APP_PASSWORD from the environment
-  - If not set, print a warning and skip email
+  - GMAIL_APP_PASSWORD is loaded from macOS Keychain by the calling script before invoking you
+  - If not set in the environment, print a warning and skip email
   - From/To: isaacns98@gmail.com
   - Subject: dotfiles: monthly sync $DATE
   - Body: PR URL + bullet list of everything added

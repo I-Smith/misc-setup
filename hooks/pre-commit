@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Scans staged files for common secret patterns before every commit.
+# Installed by setup.sh as .git/hooks/pre-commit.
+set -euo pipefail
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+[ -z "$STAGED" ] && exit 0
+
+FOUND=()
+
+while IFS= read -r file; do
+  # Skip binary files
+  if git show ":$file" | file - | grep -q binary 2>/dev/null; then continue; fi
+
+  content=$(git show ":$file")
+
+  # Private keys (use -e to prevent BSD grep treating leading dashes as flags)
+  if echo "$content" | grep -qE -e "-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY"; then
+    FOUND+=("$file: private key")
+  fi
+
+  # AWS access key IDs
+  if echo "$content" | grep -qE "AKIA[0-9A-Z]{16}"; then
+    FOUND+=("$file: AWS access key ID")
+  fi
+
+  # Credentials assigned to secret-named variables (non-empty values, not placeholders)
+  if echo "$content" | grep -qE '(PASSWORD|SECRET|TOKEN|API_KEY|APP_KEY|PRIVATE_KEY)\s*=\s*[A-Za-z0-9/+_-]{10,}'; then
+    # Exclude lines that are clearly code/comments/examples
+    if echo "$content" | grep -E '(PASSWORD|SECRET|TOKEN|API_KEY|APP_KEY|PRIVATE_KEY)\s*=\s*[A-Za-z0-9/+_-]{10,}' \
+      | grep -qvE '(#|your-|placeholder|example|getenv|environ|os\.environ|\$\(|\$\{|=\$)'; then
+      FOUND+=("$file: possible hardcoded credential")
+    fi
+  fi
+
+done <<< "$STAGED"
+
+if [ ${#FOUND[@]} -eq 0 ]; then
+  exit 0
+fi
+
+echo ""
+echo "pre-commit: possible secrets detected in staged files — commit blocked:"
+for hit in "${FOUND[@]}"; do
+  echo "  $hit"
+done
+echo ""
+echo "If this is a false positive, use: git commit --no-verify"
+echo ""
+exit 1

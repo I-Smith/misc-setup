@@ -1,4 +1,19 @@
 {
   "theme": "dark",
-  "effortLevel": "medium"
+  "effortLevel": "medium",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/projects/personal/misc-setup/hooks/secrets-check.sh",
+            "timeout": 15,
+            "statusMessage": "Scanning for secrets..."
+          }
+        ]
+      }
+    ]
+  }
 }
