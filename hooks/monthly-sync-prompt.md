@@ -11,6 +11,11 @@ in the repo's install scripts, then commit any updates and open a PR.
 
 ## Steps
 
+### 0. Sync from main
+Run: git -C $REPO fetch origin main && git -C $REPO merge origin/main --no-edit
+If the merge has conflicts, abort it (git -C $REPO merge --abort) and note it in the PR
+description, but continue with drift detection — don't skip the rest of the job.
+
 ### 1. Homebrew formulae
 Run: brew leaves
 Compare to formulae listed in $REPO/install/Brewfile (lines matching ^brew ")

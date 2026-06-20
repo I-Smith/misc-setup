@@ -36,6 +36,14 @@ NEW_CASKS=""
 cd "$REPO"
 git checkout "$BRANCH" 2>/dev/null
 
+# Sync from main before detecting drift so the PR applies cleanly
+if git fetch origin main 2>/dev/null; then
+  if ! git merge origin/main --no-edit 2>/dev/null; then
+    echo "monthly-sync $DATE: warning: merge from main had conflicts — skipping merge, continuing with drift detection"
+    git merge --abort 2>/dev/null || true
+  fi
+fi
+
 # Formulae
 grep '^brew "' "$BREWFILE" | sed 's/brew "\([^"]*\)".*/\1/' | sort > /tmp/ms_bf_formulas.txt
 brew leaves 2>/dev/null | sort > /tmp/ms_leaves.txt
