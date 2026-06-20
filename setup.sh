@@ -44,8 +44,10 @@ echo "  link    $HOME/.claude/commands"
 
 echo ""
 echo "==> Git hooks"
-ln -sf "$REPO/hooks/post-merge" "$REPO/.git/hooks/post-merge"
+ln -sf "$REPO/hooks/post-merge"  "$REPO/.git/hooks/post-merge"
+ln -sf "$REPO/hooks/pre-commit"  "$REPO/.git/hooks/pre-commit"
 echo "  link    .git/hooks/post-merge"
+echo "  link    .git/hooks/pre-commit"
 
 echo ""
 echo "==> Monthly sync (crontab)"
