@@ -1,7 +1,7 @@
 You are running as an autonomous monthly drift-check agent for Isaac's dotfiles repo.
 Today's date: $DATE
 Repo path: $REPO
-Branch: techstar-mac (open PRs to: main)
+Branch: $BRANCH (open PRs to: main)
 Notification email: isaacns98@gmail.com
 
 ## Your job
@@ -10,6 +10,11 @@ Detect drift between what's currently installed on this machine and what's track
 in the repo's install scripts, then commit any updates and open a PR.
 
 ## Steps
+
+### 0. Sync from main
+Run: git -C $REPO fetch origin main && git -C $REPO merge origin/main --no-edit
+If the merge has conflicts, abort it (git -C $REPO merge --abort) and note it in the PR
+description, but continue with drift detection — don't skip the rest of the job.
 
 ### 1. Homebrew formulae
 Run: brew leaves
