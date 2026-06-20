@@ -6,6 +6,7 @@ set -euo pipefail
 
 REPO="$HOME/projects/personal/misc-setup"
 DATE=$(date +%Y-%m-%d)
+BRANCH=$(git -C "$REPO" branch --show-current 2>/dev/null || echo "techstar-mac")
 
 # Load env vars (crontab does not source .zshenv)
 [ -f "$HOME/.zshenv" ] && source "$HOME/.zshenv"
@@ -16,7 +17,7 @@ GMAIL_APP_PASSWORD=$(security find-generic-password -a "$USER" -s "gmail-app-pas
 # ── Claude agent path ─────────────────────────────────────────────────────────
 
 if command -v claude >/dev/null 2>&1; then
-  PROMPT=$(DATE="$DATE" REPO="$REPO" envsubst < "$REPO/hooks/monthly-sync-prompt.md")
+  PROMPT=$(DATE="$DATE" REPO="$REPO" BRANCH="$BRANCH" envsubst < "$REPO/hooks/monthly-sync-prompt.md")
   echo "monthly-sync $DATE: invoking Claude agent..."
   claude --allowedTools "Bash,Read,Edit" -p "$PROMPT"
   exit 0
@@ -27,7 +28,7 @@ fi
 echo "monthly-sync $DATE: claude CLI not found, running bash fallback..."
 
 BREWFILE="$REPO/install/Brewfile"
-BRANCH="techstar-mac"
+
 CHANGED=false
 NEW_FORMULAS=""
 NEW_CASKS=""

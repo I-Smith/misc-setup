@@ -1,7 +1,7 @@
 You are running as an autonomous monthly drift-check agent for Isaac's dotfiles repo.
 Today's date: $DATE
 Repo path: $REPO
-Branch: techstar-mac (open PRs to: main)
+Branch: $BRANCH (open PRs to: main)
 Notification email: isaacns98@gmail.com
 
 ## Your job
