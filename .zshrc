@@ -66,11 +66,17 @@ plugins=(
   git
   docker
   docker-compose
-  docker-machine
   npm
+  aliases
+  colored-man-pages
+  colorize
+  fzf
+  nvm
+  yarn
   zsh-interactive-cd
   zsh-autosuggestions
-  zsh-syntax-highlighting  
+  zsh-navigation-tools
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -102,6 +108,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias python="python3"
+alias pip="pip3"
 
 #Notes directory
 export NOTE_DIR=$HOME/Notes
@@ -111,4 +118,10 @@ export EDITOR=code
 source ~/.zshenv
 source ~/.zprofile
 [ -f ~/.functions ] && source ~/.functions
-eval "$(direnv hook zsh)"
+
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
+
+[ -f "$HOME/.deno/env" ] && . "$HOME/.deno/env"
+if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then
+  export FPATH="$HOME/.zsh/completions:$FPATH"
+fi

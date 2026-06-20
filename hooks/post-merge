@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Runs automatically after `git pull`. Checks that all repo-managed symlinks
+# exist on this machine and prompts to run setup.sh if any are missing.
+
+REPO="$(git rev-parse --show-toplevel)"
+MISSING=()
+
+check() {
+  local dest="$1"
+  if [ ! -L "$dest" ] || [ ! -e "$dest" ]; then
+    MISSING+=("$dest")
+  fi
+}
+
+# Shell dotfiles
+check "$HOME/.zshrc"
+check "$HOME/.zshenv"
+check "$HOME/.zprofile"
+check "$HOME/.functions"
+check "$HOME/.vimrc"
+
+# Cursor
+check "$HOME/.cursor/mcp.json"
+check "$HOME/Library/Application Support/Cursor/User/settings.json"
+check "$HOME/Library/Application Support/Cursor/User/keybindings.json"
+
+# Claude Code
+check "$HOME/.claude/settings.json"
+check "$HOME/.claude/commands"
+
+# Monthly sync crontab
+CRON_MISSING=false
+if ! crontab -l 2>/dev/null | grep -qF "monthly-sync.sh"; then
+  CRON_MISSING=true
+fi
+
+if [ ${#MISSING[@]} -eq 0 ] && [ "$CRON_MISSING" = false ]; then
+  exit 0
+fi
+
+if [ "$CRON_MISSING" = true ]; then
+  MISSING+=("crontab: monthly-sync not installed")
+fi
+
+echo ""
+echo "dotfiles: ${#MISSING[@]} symlink(s) missing after pull:"
+for dest in "${MISSING[@]}"; do
+  echo "  missing: $dest"
+done
+echo ""
+printf "Run setup.sh to fix? [y/N] "
+read -r answer < /dev/tty
+if [[ "$answer" =~ ^[Yy]$ ]]; then
+  "$REPO/setup.sh"
+fi

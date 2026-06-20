@@ -1,0 +1,73 @@
+# Brewfile — managed by misc-setup repo
+# Install everything: brew bundle --file=install/Brewfile
+# Check status:       brew bundle check --file=install/Brewfile
+
+# ── Taps ──────────────────────────────────────────────────────────────────────
+tap "fogfish/go-check-updates"  # go-check-updates
+tap "hashicorp/tap"             # terraform
+tap "heroku/brew"               # heroku CLI
+tap "stripe/stripe-cli"         # stripe CLI
+tap "weaveworks/tap"            # eksctl
+
+# ── Languages & Runtimes ──────────────────────────────────────────────────────
+brew "go"                       # Go language — or install manually to /usr/local/go (current machine uses manual install)
+brew "openjdk"                  # latest JDK
+brew "openjdk@17"               # LTS JDK for Android/legacy
+brew "python@3.13"              # Python 3
+brew "ruby"                     # Ruby (also used by fastlane/cocoapods)
+brew "rust"                     # Rust + cargo
+brew "nvm"                      # Node version manager (nodes installed via nvm in common.sh)
+brew "python-tk@3.12"           # Tkinter GUI bindings for Python 3.12
+
+# ── Cloud & DevOps ────────────────────────────────────────────────────────────
+brew "awscli"                   # AWS CLI v2
+brew "eksctl"                   # Amazon EKS cluster management
+brew "helm"                     # Kubernetes package manager
+brew "heroku"                   # Heroku CLI
+brew "kubernetes-cli"           # kubectl
+brew "terraform"                # infrastructure as code
+brew "stripe"                   # Stripe CLI
+brew "golang-migrate"           # database migrations
+
+# ── Databases ─────────────────────────────────────────────────────────────────
+brew "postgresql@14"            # Postgres 14 (legacy project support)
+brew "postgresql@16"            # Postgres 16 (current)
+
+# ── CLI Utilities ─────────────────────────────────────────────────────────────
+brew "commitizen"               # conventional commits
+brew "coreutils"                # GNU core utils (gdate, gls, etc.)
+brew "exercism"                 # coding exercises CLI
+brew "fzf"                      # fuzzy finder
+brew "gh"                       # GitHub CLI
+brew "git"                      # git (newer than macOS built-in)
+brew "grep"                     # GNU grep (ggrep)
+brew "jq"                       # JSON processor
+brew "pipx"                     # isolated Python tool installs
+brew "pre-commit"               # git pre-commit hooks
+brew "terminal-notifier"        # macOS notification banners (used by monthly-sync agent)
+brew "tree-sitter"              # parser toolkit
+brew "watchman"                 # file watcher (used by React Native)
+brew "wget"                     # file downloader
+brew "zsh-syntax-highlighting"  # fish-style syntax highlighting for zsh
+
+# ── Mobile ────────────────────────────────────────────────────────────────────
+brew "fastlane"                 # iOS/Android deployment automation
+brew "yarn"                     # JS package manager (also used by RN)
+
+# ── Desktop Apps (casks) ──────────────────────────────────────────────────────
+cask "aws-vault"                # AWS credential manager (app bundle)
+cask "aws-vault-binary"         # AWS credential manager (precompiled binary)
+cask "bitwarden"                # password manager
+cask "bruno"                    # API client (Postman alternative)
+cask "docker"                   # Docker for Mac (legacy cask, kept alongside docker-desktop)
+cask "docker-desktop"           # Docker Desktop
+cask "font-powerline-symbols"   # required by agnoster zsh theme
+cask "google-chrome"            # browser
+cask "iterm2"                   # terminal
+cask "raycast"                  # launcher (Spotlight replacement)
+cask "rectangle"                # window manager
+cask "slack"                    # messaging
+cask "spotify"                  # music
+cask "visual-studio-code"       # editor
+cask "vlc"                      # media player
+cask "zulu@17"                  # Azul Zulu OpenJDK 17 (used by Android toolchain)

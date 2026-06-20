@@ -67,3 +67,7 @@ function assumeK8sDev() {
 function awslogin {
     aws sso login --sso-session bellum_ai
 }
+
+function psql_spendigo_local {
+	psql -h localhost -U spendigo -d spendigo_backend_development -W
+}
