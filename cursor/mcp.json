@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "mcp-mermaid": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-mermaid"
+      ]
+    },
+    "shopify-dev-mcp": {
+      "command": "npx -y @shopify/dev-mcp@latest",
+      "env": {},
+      "args": []
+    },
+    "stripe": {
+      "url": "https://mcp.stripe.com",
+      "headers": {}
+    }
+  }
+}
