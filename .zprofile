@@ -11,7 +11,7 @@ export GOBIN=$GOPATH/bin
 
 export ANDROID_HOME=$HOME/Library/Android/sdk
 
-export PATH="$PATH:$USRBIN:$GNUBIN:$GOBIN:$GOROOT/bin:$LIBPQBIN:$GREPPATH"
+export PATH="$HOME/.local/bin:$PATH:$USRBIN:$GNUBIN:$GOBIN:$GOROOT/bin:$LIBPQBIN:$GREPPATH"
 [ -d "$ANDROID_HOME" ] && PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
 [ -d "$HOME/.fastlane/bin" ] && PATH="$PATH:$HOME/.fastlane/bin"
 export PATH
