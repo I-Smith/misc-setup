@@ -20,7 +20,8 @@ fi
 [ "$is_commit" = false ] && [ "$is_push_or_pr" = false ] && exit 0
 
 # ── Patterns ────────────────────────────────────────────────────────────────
-SECRET_RE='(AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY)'
+SECRET_KEY_RE='-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY'
+AWS_KEY_RE='AKIA[0-9A-Z]{16}'
 CRED_RE='(PASSWORD|SECRET|TOKEN|API_KEY|APP_KEY|PRIVATE_KEY)\s*=\s*[A-Za-z0-9/+_-]{10,}'
 SAFE_RE='(#|your-|placeholder|example|getenv|environ|os\.environ|\$\(|\$\{|=\$)'
 
@@ -29,7 +30,7 @@ scan_content() {
   local label="$2"
   local hit=""
 
-  if echo "$content" | grep -qE "$SECRET_RE"; then
+  if echo "$content" | grep -qE -e "$SECRET_KEY_RE" || echo "$content" | grep -qE "$AWS_KEY_RE"; then
     hit="$label: private key or AWS access key"
   elif echo "$content" | grep -qE "$CRED_RE"; then
     local cred_lines

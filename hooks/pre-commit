@@ -14,8 +14,8 @@ while IFS= read -r file; do
 
   content=$(git show ":$file")
 
-  # Private keys
-  if echo "$content" | grep -qE "-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY"; then
+  # Private keys (use -e to prevent BSD grep treating leading dashes as flags)
+  if echo "$content" | grep -qE -e "-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY"; then
     FOUND+=("$file: private key")
   fi
 
